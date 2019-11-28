@@ -1,21 +1,12 @@
-import { chronomancy } from '../src/bin/cli';
-import * as chai from 'chai';
-import * as sinon from 'sinon';
+import chronomancy from '../src/chronomancy';
 
-const assert = chai.assert;
 
-describe('CLI', () => {
-    describe('version', () => {
-        it('should show the version', () => {
-            console.log(process.argv)
-            const spy = sinon.spy(console, 'log');
-            process.argv = [ 'node', 'cli.ts', 'version' ];
+test('should return version if no arguments given', () => {
 
-            chronomancy()
+    console.log = jest.fn(msg => process.stdout.write(msg + '\n'))
 
-            assert(spy.calledWith('0.0.1'))
+    chronomancy([]);
 
-            spy.restore()
-        });
-    });
+    expect(console.log).toBeCalledWith('Hello, World!');
+
 });
