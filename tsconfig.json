@@ -1,6 +1,8 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
+        "strictPropertyInitialization": true,
+        "strictNullChecks": true,
         "target": "es6",
         "declaration": true,
         "module": "commonjs",

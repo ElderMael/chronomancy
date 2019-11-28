@@ -7,7 +7,7 @@
     "scripts": {
         "clean": "rimraf dist",
         "build": "npm run clean && tsc --pretty",
-        "test": "npx jest"
+        "test": "tsc --pretty && npx jest"
     },
     "author": {
         "name": "ElderMael",
