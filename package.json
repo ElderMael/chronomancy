@@ -1,0 +1,31 @@
+{
+    "name": "chronomancy",
+    "version": "0.1.0",
+    "description": "",
+    "repository": "",
+    "license": "GPLv3",
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "npm run clean && tsc --pretty",
+        "test": "npm run build"
+    },
+    "author": {
+        "name": "ElderMael",
+        "email": "sftwr.mael@gmail.com"
+    },
+    "main": "dist/bin/cli.js",
+    "typings": "dist/bin/cli.d.ts",
+    "bin": {
+        "chronomancy": "bin/chronomancy"
+    },
+    "files": [
+        "bin",
+        "dist"
+    ],
+    "devDependencies": {
+        "@types/node": "^7.0.5",
+        "rimraf": "^3.0.0",
+        "typescript": "^3.7.2"
+    },
+    "dependencies": {}
+}
