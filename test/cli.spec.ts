@@ -28,6 +28,10 @@ describe('start command', () => {
 
     test('should start task with the given parameters', () => {
         const [ entry ] = entries;
+
+        if (entry == null) {
+            throw new Error('Entry cannot be null');
+        }
         const now = new Date();
 
         expect( now > entry.start ).toBe(true);
