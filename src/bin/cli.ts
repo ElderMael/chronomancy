@@ -8,6 +8,7 @@ const [, , ...args] = process.argv;
 yargs(args)
     .middleware(createDatabaseIfNecessary)
     .commandDir('../commands')
+    .help()
     .parse();
 
 async function createDatabaseIfNecessary(argv: Arguments): Promise<Arguments> {
@@ -51,11 +52,10 @@ async function createDatabaseIfNecessary(argv: Arguments): Promise<Arguments> {
             Promise.resolve(db),
             schema,
         ]);
-    })
-        .then((results) => {
-            const [db] = results;
-            argv.database = db;
+    }).then((results) => {
+        const [db] = results;
+        argv.database = db;
 
-            return argv;
-        });
+        return argv;
+    });
 }
