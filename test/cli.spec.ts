@@ -1,40 +1,21 @@
-import chronomancy from '../src/chronomancy';
-import Entry from '../src/model/entry';
+import {addNewEntry} from "../src/commands/start";
+import {Database} from "sqlite";
 
-test('should return version if no arguments given', () => {
+describe('Start Command', () => {
 
-    const version = require('../package.json').version;
+    test('should create new entry given types and notes', () => {
+        // given
+        const database = {
+            run: jest.fn(() => {
+                return Promise.resolve();
+            }) as any,
+        } as Database;
 
-    console.log = jest.fn(msg => process.stdout.write(msg + '\n'))
+        // when
+        const result = addNewEntry(database, 'meeting', 'omg', new Date(), 1);
 
-    chronomancy([]);
-
-    expect(console.log).toBeCalledWith(`chronomancy version ${version}`);
-
-});
-
-describe('start command', () => {
-    // when
-    const entries: Entry[]  = chronomancy([
-            "start",
-            "TECH",
-            "Update Docs For App"
-    ]);
-
-    // then
-    test('should start task given a story number and task description', () => {
-        expect(entries.length).toBe(1);
-    });
-
-    test('should start task with the given parameters', () => {
-        const [ entry ] = entries;
-
-        if (entry == null) {
-            throw new Error('Entry cannot be null');
-        }
-        const now = new Date();
-
-        expect( now > entry.start ).toBe(true);
+        //then
+        return result;
     });
 
 });

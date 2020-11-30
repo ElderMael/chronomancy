@@ -1,4 +1,5 @@
-declare module "chrono-node" {
+import {Database} from "sqlite";
 
-    function parseDate(date: string): Date;
+interface DatabaseArg {
+    database: Database
 }
