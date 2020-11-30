@@ -19,7 +19,8 @@ async function createDatabaseIfNecessary(argv: Arguments): Promise<Arguments> {
             CREATE TABLE IF NOT EXISTS Meta
             (
                 id                INTEGER PRIMARY KEY,
-                current_timesheet INTEGER
+                current_timesheet INTEGER,
+                current_task      INTEGER
             );
 
             CREATE TABLE IF NOT EXISTS Timesheets

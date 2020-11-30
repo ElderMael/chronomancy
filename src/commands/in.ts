@@ -11,11 +11,11 @@ interface StartArgs {
 }
 
 export const command = [
-    'start <type> <notes...>',
+    'in <type> <notes...>',
 ];
 
 export const aliases = [
-    's',
+    'i',
 ];
 
 export const describe = `Create a task within the current context`;
@@ -66,7 +66,10 @@ export const handler = async function handleStartCommand(args: Arguments<StartAr
         args.notes.join(' ').trim(),
         timestamp,
         timesheetId as number
-    ).then(() => {
+    ).then((result) => {
+        args.database.run(`UPDATE Meta SET current_task = :taskId WHERE id = 1`, {
+            ':taskId': result.lastID
+        });
         console.log(chalk.green('New task started.'));
     });
 }
