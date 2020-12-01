@@ -46,22 +46,30 @@ export async function completeEntry(database: Database,
 export const handler = async function handleStartCommand(args: Arguments<StartArgs & DatabaseArg>): Promise<any> {
     const endDate = parseDate(args.at, new Date());
 
-    const currentEntryId = await args.database.get<number>(`SELECT current_task
-                                                            FROM Meta
-                                                            WHERE id = 1`);
+    const meta = await args.database
+        .get<{ current_task: number }>(`SELECT current_task
+                                        FROM Meta
+                                        WHERE id = 1`);
+
+    if (!meta) {
+        return Promise.reject(new Error('Current task not active.'));
+    }
 
     const entry = await args.database.get<Task>(`SELECT *
                                                  FROM Tasks
                                                  WHERE id = :entryId`, {
-        ':entryId': currentEntryId
+        ':entryId': meta.current_task
     });
 
-    if (!entry?.end_time) {
-        console.log(chalk.red('Task was already completed'));
-        return Promise.reject();
+    if (!entry) {
+        return Promise.reject(new Error('No entry found.'));
     }
 
-    return completeEntry(args.database, currentEntryId as number, endDate)
+    if (entry.end_time) {
+        return Promise.reject('Task was already completed.');
+    }
+
+    return completeEntry(args.database, entry.id, endDate)
         .then(() => {
             console.log(chalk.green('Task completed.'));
         });

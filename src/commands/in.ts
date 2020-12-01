@@ -24,13 +24,13 @@ export function builder(yargs: Argv<StartArgs>): Argv {
     return yargs.option('at', {
         default: 'now',
         description: 'a human parseable start date e.g. now, 10 minutes ago, etc.',
-        type: "string",
+        type: 'string',
     }).positional('type', {
         description: 'type of the task',
-        type: "string",
+        type: 'string',
     }).positional('notes', {
         description: 'task descriptions',
-        type: 'array'
+        type: 'string'
     });
 }
 

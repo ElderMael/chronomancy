@@ -2,6 +2,7 @@ import yargs, {Arguments} from "yargs";
 import {open} from "sqlite";
 import {homedir} from "os";
 import sqlite3 from "sqlite3";
+import chalk from "chalk";
 
 const [, , ...args] = process.argv;
 
@@ -9,6 +10,16 @@ yargs(args)
     .middleware(createDatabaseIfNecessary)
     .commandDir('../commands')
     .help()
+    .showHelpOnFail(false)
+    .fail((msg, err) => {
+        if (msg) {
+            console.error(chalk.red(msg));
+        }
+        if (err) {
+            console.error(chalk.red(err));
+            process.exit(1);
+        }
+    })
     .parse();
 
 async function createDatabaseIfNecessary(argv: Arguments): Promise<Arguments> {
