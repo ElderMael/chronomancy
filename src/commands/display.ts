@@ -46,7 +46,7 @@ export const handler = async function handleDisplayCommand(args: Arguments<Start
         ':timesheetId': meta.current_timesheet
     });
 
-    const titles = ['DAY', 'START', 'END', 'DURATION', 'NOTES'];
+    const titles = ['DAY', 'START', 'END', 'DURATION', 'TYPE', 'NOTES'];
 
     let rows = entries.map(e => {
 
@@ -54,9 +54,10 @@ export const handler = async function handleDisplayCommand(args: Arguments<Start
         let duration = dayjs.duration(diff);
         return [
             dayjs(e.start_time).format('ddd MMM DD, YYYY'),
-            dayjs(e.start_time).format('hh:mm:ss'),
-            e?.end_time ? dayjs(e.end_time).format('hh:mm:ss') : '',
+            dayjs(e.start_time).format('hh:mm:ss A'),
+            e?.end_time ? dayjs(e.end_time).format('hh:mm:ss A') : '',
             `${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`,
+            e.task_type,
             e.notes,
         ];
     });
