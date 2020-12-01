@@ -4,6 +4,7 @@ import {table} from "table";
 import dayjs from "dayjs";
 import duration from 'dayjs/plugin/duration';
 import relativeTime from "dayjs/plugin/relativeTime";
+import chalk from "chalk";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -40,6 +41,12 @@ export const handler = async function handleDisplayCommand(args: Arguments<Start
         return Promise.reject(new Error('No active timesheet found.'));
     }
 
+    const timesheet = await args.database.get<{ name: string }>(`SELECT *
+                                                                 FROM Timesheets
+                                                                 WHERE id = :timesheetId`, {
+        ':timesheetId': meta.current_timesheet
+    })
+
     const entries = await args.database.all<Task[]>(`SELECT *
                                                      FROM Tasks
                                                      WHERE timesheet_id = :timesheetId`, {
@@ -62,7 +69,8 @@ export const handler = async function handleDisplayCommand(args: Arguments<Start
         ];
     });
 
-    console.log(table([titles, ...rows]));
+    console.log(chalk.green(`Timesheet: ${timesheet?.name}`));
+    console.log(table([titles, ...rows], {}));
 
     return Promise.resolve();
 }
