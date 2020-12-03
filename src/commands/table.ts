@@ -1,7 +1,7 @@
 import {Task} from "../types/types";
 import dayjs from "dayjs";
 import chalk from "chalk";
-import {table} from "table";
+import {getBorderCharacters, table} from "table";
 
 export function printEntries(timesheet: string, entries: Task[]) {
     const titles = ['DAY', 'START', 'END', 'DURATION', 'TYPE', 'NOTES'];
@@ -31,6 +31,13 @@ export function printEntries(timesheet: string, entries: Task[]) {
 
     console.log(chalk.green(`Timesheet: ${timesheet}`));
     console.log(table([titles, ...rows], {
-        singleLine: true
+        border: getBorderCharacters(`void`),
+        columnDefault: {
+            paddingLeft: 0,
+            paddingRight: 2
+        },
+        drawHorizontalLine: () => {
+            return false
+        }
     }));
 }
