@@ -3,7 +3,7 @@ import {DatabaseArg, Task} from "../types/types";
 import dayjs from "dayjs";
 import duration from 'dayjs/plugin/duration';
 import relativeTime from "dayjs/plugin/relativeTime";
-import {printEntries} from "./table";
+import {printEntries} from "../format/table";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
