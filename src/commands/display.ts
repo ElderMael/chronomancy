@@ -1,10 +1,9 @@
 import {Arguments, Argv} from "yargs";
 import {DatabaseArg, Task} from "../types/types";
-import {table} from "table";
 import dayjs from "dayjs";
 import duration from 'dayjs/plugin/duration';
 import relativeTime from "dayjs/plugin/relativeTime";
-import chalk from "chalk";
+import {printEntries} from "./table";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -49,28 +48,12 @@ export const handler = async function handleDisplayCommand(args: Arguments<Start
 
     const entries = await args.database.all<Task[]>(`SELECT *
                                                      FROM Tasks
-                                                     WHERE timesheet_id = :timesheetId`, {
+                                                     WHERE timesheet_id = :timesheetId
+                                                     ORDER BY start_time`, {
         ':timesheetId': meta.current_timesheet
     });
 
-    const titles = ['DAY', 'START', 'END', 'DURATION', 'TYPE', 'NOTES'];
-
-    let rows = entries.map(e => {
-
-        let diff = dayjs(e?.end_time ? e.end_time : dayjs()).diff(e.start_time);
-        let duration = dayjs.duration(diff);
-        return [
-            dayjs(e.start_time).format('ddd MMM DD, YYYY'),
-            dayjs(e.start_time).format('hh:mm:ss A'),
-            e?.end_time ? dayjs(e.end_time).format('hh:mm:ss A') : '',
-            `${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`,
-            e.task_type,
-            e.notes,
-        ];
-    });
-
-    console.log(chalk.green(`Timesheet: ${timesheet?.name}`));
-    console.log(table([titles, ...rows], {}));
+    printEntries(timesheet?.name as string, entries);
 
     return Promise.resolve();
 }
