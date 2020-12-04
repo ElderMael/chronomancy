@@ -43,7 +43,9 @@ export function printEntries(timesheet: string, entries: Task[]) {
         return [...e];
     });
 
+    console.log('');
     console.log(chalk.green(`Timesheet: ${timesheet}`));
+    console.log('');
     console.log(table([titles, ...rows], {
         border: getBorderCharacters(`void`),
         columnDefault: {
