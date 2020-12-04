@@ -50,10 +50,10 @@ export function printEntries(timesheet: string, entries: Task[]) {
         border: getBorderCharacters(`void`),
         columnDefault: {
             paddingLeft: 0,
-            paddingRight: 2
+            paddingRight: 2,
         },
         drawHorizontalLine: () => {
-            return false
+            return false;
         }
     }));
 }
