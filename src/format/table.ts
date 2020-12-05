@@ -29,9 +29,11 @@ function calculateTotals(prev: any, curr: any, index: number, arr: any[]): { day
 
     const d = duration as Duration;
 
-    const nextDay = arr[index + 1][0];
+    const isNotLastElement = index < (arr.length - 1);
+    const thereIsPreviousDay = previousDay[0] === undefined;
+    const nextDayIsTheSame = day === arr[index + 1]?.[0];
 
-    if (index < (arr.length - 1) && (day === nextDay || previousDay[0] === undefined)) {
+    if (isNotLastElement && (nextDayIsTheSame || thereIsPreviousDay)) {
         return {
             daySum: prev.daySum.add(duration as Duration),
             rows: [
