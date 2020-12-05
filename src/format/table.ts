@@ -21,7 +21,7 @@ function durationToString(duration: Duration): string {
     return `${zeroPad(duration.hours(), 2)}h ${zeroPad(duration.minutes(), 2)}m ${zeroPad(duration.seconds(), 2)}s`;
 }
 
-function calculateTotals(prev: any, curr: any, index: number): { daySum: Duration, rows: string[] } {
+function calculateTotals(prev: any, curr: any, index: number, arr: any[]): { daySum: Duration, rows: string[] } {
 
     const [day, start, end, duration, type, notes] = curr;
 
@@ -29,20 +29,18 @@ function calculateTotals(prev: any, curr: any, index: number): { daySum: Duratio
 
     const d = duration as Duration;
 
-    const sum = prev.daySum.add(duration as Duration);
+    const nextDay = arr[index + 1][0];
 
-    if (day !== previousDay[0]) {
-        console.log(`Duration: ${prev.daySum.toISOString()} + ${d.toISOString()} = ${sum.toISOString()}`)
-
+    if (index < (arr.length - 1) && (day === nextDay || previousDay[0] === undefined)) {
         return {
-            daySum: sum,
+            daySum: prev.daySum.add(duration as Duration),
             rows: [
                 ...prev.rows,
                 [
                     day as string,
                     start as string,
                     end as string,
-                    durationToString(sum),
+                    durationToString(d),
                     type as string,
                     notes as string
                 ]
@@ -66,7 +64,7 @@ function calculateTotals(prev: any, curr: any, index: number): { daySum: Duratio
                 '',
                 '',
                 'TOTAL',
-                durationToString(sum),
+                durationToString(prev.daySum.add(duration as Duration)),
                 '',
                 ''
             ],
